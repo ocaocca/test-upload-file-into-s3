@@ -39,16 +39,8 @@ app.post('/upload-video', async (req, res) => {
       const buffer = fs.readFileSync(path);
       const type = await fileType.fromBuffer(buffer);
       const fileName = `videos/${Date.now().toString()}`;
-
-      const params = {
-        ACL: 'public-read',
-        Body: buffer,
-        Bucket: 'test-upload-occa',
-        ContentType: type.mime,
-        Key: `${fileName}.${type.ext}`,
-      };
-
-      const data = await s3.upload(params).promise();
+      const data = await uploadFile(buffer, fileName, type);
+      console.log(data.Location)
 
       return res.status(200).send(data);
     } catch (e) {
@@ -70,16 +62,7 @@ app.post('/upload-file', async (req, res) => {
       const buffer = fs.readFileSync(path);
       const type = await fileType.fromBuffer(buffer);
       const fileName = `module/${Date.now().toString()}`;
-
-      const params = {
-        ACL: 'public-read',
-        Body: buffer,
-        Bucket: 'test-upload-occa',
-        ContentType: type.mime,
-        Key: `${fileName}.${type.ext}`,
-      };
-
-      const data = await s3.upload(params).promise();
+      const data = await uploadFile(buffer, fileName, type);
 
       return res.status(200).send(data);
     } catch (e) {
@@ -101,16 +84,7 @@ app.post('/upload-picture', async (req, res) => {
       const buffer = fs.readFileSync(path);
       const type = await fileType.fromBuffer(buffer);
       const fileName = `picture/${Date.now().toString()}`;
-
-      const params = {
-        ACL: 'public-read',
-        Body: buffer,
-        Bucket: 'test-upload-occa',
-        ContentType: type.mime,
-        Key: `${fileName}.${type.ext}`,
-      };
-
-      const data = await s3.upload(params).promise();
+      const data = await uploadFile(buffer, fileName, type);
 
       return res.status(200).send(data);
     } catch (e) {
